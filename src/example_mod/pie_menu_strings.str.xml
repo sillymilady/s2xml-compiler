@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<str name="Object Functions - Secret Rendezvous" group="0x7FD46CD0" instance="0x0001">
+  <entry value="Secret Rendezvous" description="Slot 0" language="en-us"/>
+  <entry value="Pass Secret Note"  description="Slot 1" language="en-us"/>
+  <entry value="Share Secret"      description="Slot 2" language="en-us"/>
+</str>

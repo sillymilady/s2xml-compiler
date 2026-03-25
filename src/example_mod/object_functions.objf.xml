@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objf name="Secret Rendezvous Object Functions" group="0x7FD46CD0" instance="0x0001">
+  <!-- Slot 0: Secret Rendezvous — guard checks relationship >= 60 -->
+  <slot action="0x1002" guard="0x1001"/>
+  <!-- Slot 1: Pass Secret Note — guard checks relationship >= 60 -->
+  <slot action="0x1003" guard="0x1001"/>
+  <!-- Slot 2: Share Secret — guard checks relationship >= 60 -->
+  <slot action="0x1004" guard="0x1001"/>
+</objf>

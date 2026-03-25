@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  action_note.bhav.xml
+  Action: "Pass Secret Note"
+  Smaller relationship boost, no animation (just a quick social).
+  Demonstrates <expression> for setting a temp and <test> comparing it.
+-->
+<bhav
+  name         = "Secret Rendezvous - Pass Note"
+  group        = "0x7FD46CD0"
+  instance     = "0x1003"
+  tree_type    = "0"
+  argc         = "0"
+  locals       = "0"
+  flags        = "0x01"
+  tree_version = "0">
+
+  <!-- Node 0: Set temp[0] = 1 (flag that we started) -->
+  <expression
+    lhs     = "temp:0"
+    op      = "="
+    rhs     = "lit:1"
+    true    = "1"
+    false   = "false"
+    comment = "temp[0] = 1 (started)"/>
+
+  <!-- Node 1: +8 daily relationship both directions -->
+  <rel_change
+    delta     = "8"
+    type      = "0"
+    direction = "2"
+    true      = "2"
+    false     = "false"
+    comment   = "Daily rel +$REL_GAIN_NOTE (8)"/>
+
+  <!-- Node 2: +5 lifetime relationship -->
+  <rel_change
+    delta     = "5"
+    type      = "1"
+    direction = "2"
+    true      = "3"
+    false     = "false"
+    comment   = "Lifetime rel +$LTR_GAIN_SMALL (5)"/>
+
+  <!-- Node 3: Fun motive +10 -->
+  <instruction
+    opcode = "0x000F"
+    true   = "4"
+    false  = "false"
+    op0    = "0x02"
+    op1    = "0x0A"
+    op2    = "0x00"
+    comment= "Fun +10 on self"/>
+
+  <!-- Node 4: Return True -->
+  <instruction
+    opcode = "0x0001"
+    true   = "true"
+    false  = "false"
+    comment= "Return True"/>
+
+</bhav>

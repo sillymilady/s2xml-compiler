@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  guard_can_do.bhav.xml
+  Guard BHAV: returns TRUE if daily relationship >= REL_THRESHOLD (60).
+  Used as the guard for all three secret interactions.
+
+  Demonstrates:
+  - <get_rel>  sugar element (wraps opcode 0x0027)
+  - <test>     sugar element with $CONST reference (wraps opcode 0x0003 in test mode)
+-->
+<bhav
+  name         = "Secret Rendezvous - Can Do?"
+  group        = "0x7FD46CD0"
+  instance     = "0x1001"
+  tree_type    = "0"
+  argc         = "0"
+  locals       = "0"
+  flags        = "0x01"
+  tree_version = "0">
+
+  <!-- Node 0: Fetch daily relationship score into temp[0] -->
+  <get_rel
+    dest      = "0"
+    type      = "0"
+    direction = "0"
+    true      = "1"
+    false     = "false"
+    comment   = "Get daily rel score → temp[0]"/>
+
+  <!-- Node 1: Test temp[0] >= $REL_THRESHOLD (60) -->
+  <test
+    lhs     = "temp:0"
+    cmp     = ">="
+    rhs     = "$REL_THRESHOLD"
+    true    = "true"
+    false   = "false"
+    comment = "Is daily rel >= 60?"/>
+
+</bhav>

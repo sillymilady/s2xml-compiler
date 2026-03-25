@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  constants.trcn.xml
+  Named constants for the Secret Rendezvous mod.
+  These names are available as $CONST_NAME in BHAV <expression> and <test> elements.
+-->
+<trcn
+  name     = "Secret Rendezvous Constants"
+  group    = "0x7FD46CD0"
+  instance = "0x1000">
+
+  <constant name="REL_THRESHOLD"       value="60"   description="Min daily relationship to unlock secret interactions"/>
+  <constant name="REL_GAIN_RENDEZVOUS" value="15"   description="Daily rel boost from Secret Rendezvous"/>
+  <constant name="REL_GAIN_NOTE"       value="8"    description="Daily rel boost from Pass Secret Note"/>
+  <constant name="REL_GAIN_SHARE"      value="5"    description="Daily rel boost from Share Secret"/>
+  <constant name="LTR_GAIN_SMALL"      value="5"    description="Lifetime rel boost (small)"/>
+  <constant name="LTR_GAIN_MEDIUM"     value="10"   description="Lifetime rel boost (medium)"/>
+  <constant name="FUN_DELTA"           value="20"   description="Fun motive delta per interaction"/>
+  <constant name="SOCIAL_DELTA"        value="15"   description="Social motive delta per interaction"/>
+</trcn>

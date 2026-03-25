@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  action_rendezvous.bhav.xml
+  Main action: "Secret Rendezvous"
+  Animates both sims, boosts relationship and motives.
+
+  Demonstrates:
+  - <animate>       sugar element (opcode 0x000A)
+  - <rel_change>    sugar element with $CONST reference (opcode 0x0025)
+  - <expression>    sugar element for motive change (opcode 0x0003)
+  - Raw <instruction> for Change Motive (opcode 0x000F)
+-->
+<bhav
+  name         = "Secret Rendezvous - Main"
+  group        = "0x7FD46CD0"
+  instance     = "0x1002"
+  tree_type    = "0"
+  argc         = "0"
+  locals       = "0"
+  flags        = "0x01"
+  tree_version = "0">
+
+  <!-- Node 0: Animate self (whisper animation) -->
+  <animate
+    id      = "1"
+    target  = "0"
+    true    = "1"
+    false   = "false"
+    comment = "Animate self: whisper"/>
+
+  <!-- Node 1: Animate target (lean-in animation) -->
+  <animate
+    id      = "1"
+    target  = "1"
+    true    = "2"
+    false   = "false"
+    comment = "Animate target: lean in"/>
+
+  <!-- Node 2: +15 daily relationship both directions -->
+  <rel_change
+    delta     = "15"
+    type      = "0"
+    direction = "2"
+    true      = "3"
+    false     = "false"
+    comment   = "Daily rel +$REL_GAIN_RENDEZVOUS (15) both dirs"/>
+
+  <!-- Node 3: +10 lifetime relationship both directions -->
+  <rel_change
+    delta     = "10"
+    type      = "1"
+    direction = "2"
+    true      = "4"
+    false     = "false"
+    comment   = "Lifetime rel +$LTR_GAIN_MEDIUM (10) both dirs"/>
+
+  <!-- Node 4: Boost Fun motive (+20) using raw instruction -->
+  <!--
+    Opcode 0x000F = Change Motive
+      op0 = motive index (2 = Fun)
+      op1 = delta (signed int8, +20 = 0x14)
+      op2 = target (0 = self)
+  -->
+  <instruction
+    opcode = "0x000F"
+    true   = "5"
+    false  = "false"
+    op0    = "0x02"
+    op1    = "0x14"
+    op2    = "0x00"
+    comment= "Motive Fun +20 on self"/>
+
+  <!-- Node 5: Boost Social motive (+15) on self -->
+  <instruction
+    opcode = "0x000F"
+    true   = "6"
+    false  = "false"
+    op0    = "0x03"
+    op1    = "0x0F"
+    op2    = "0x00"
+    comment= "Motive Social +15 on self"/>
+
+  <!-- Node 6: Return True -->
+  <instruction
+    opcode = "0x0001"
+    true   = "true"
+    false  = "false"
+    comment= "Return True"/>
+
+</bhav>
