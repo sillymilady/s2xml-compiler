@@ -28,23 +28,13 @@ jobs:
         working-directory: src
         run: python -m PyInstaller s2xml.spec --noconfirm --clean
 
-      - name: Verify exe was built
-        run: |
-          if (!(Test-Path "src/dist/S2XML Compiler.exe")) {
-            Write-Error "Build failed - exe not found"
-            exit 1
-          }
-          Write-Host "Build successful"
-          Get-Item "src/dist/S2XML Compiler.exe" | Select-Object Name, Length
-
       - name: Install NSIS
         run: choco install nsis --yes --no-progress
 
       - name: Build installer
         run: |
           Copy-Item "src/dist/S2XML Compiler.exe" "installer/S2XML Compiler.exe"
-          cd installer
-          & "C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
+          & "C:\Program Files (x86)\NSIS\makensis.exe" "installer/installer.nsi"
           Get-Item "installer/S2XML_Compiler_Setup.exe" | Select-Object Name, Length
 
       - name: Upload installer as artifact
