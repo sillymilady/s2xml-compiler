@@ -380,7 +380,7 @@ class S2XMLApp(tk.Tk):
 
         tk.Label(header,
                  text="Sims 2 Mod Compiler",
-                 bg=C["accent"], fg="rgba(255,255,255,0.75)",
+                 bg=C["accent"], fg="#cccccc",
                  font=("Segoe UI", 10),
                  padx=0).pack(side="left", pady=10)
 
