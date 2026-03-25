@@ -1,0 +1,72 @@
+name: Build Windows Installer
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+
+      - name: Build exe
+        working-directory: src
+        run: python -m PyInstaller s2xml.spec --noconfirm --clean
+
+      - name: Verify exe was built
+        run: |
+          if (!(Test-Path "src/dist/S2XML Compiler.exe")) {
+            Write-Error "Build failed - exe not found"
+            exit 1
+          }
+          Write-Host "Build successful"
+          Get-Item "src/dist/S2XML Compiler.exe" | Select-Object Name, Length
+
+      - name: Install NSIS
+        run: choco install nsis --yes --no-progress
+
+      - name: Build installer
+        run: |
+          Copy-Item "src/dist/S2XML Compiler.exe" "installer/S2XML Compiler.exe"
+          cd installer
+          & "C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
+          Get-Item "installer/S2XML_Compiler_Setup.exe" | Select-Object Name, Length
+
+      - name: Upload installer as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: S2XML_Compiler_Setup
+          path: installer/S2XML_Compiler_Setup.exe
+          retention-days: 90
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "S2XML Compiler v1.0.${{ github.run_number }}"
+          body: |
+            ## S2XML Compiler
+            Write Sims 2 mods as XML files and compile them into .package files.
+            ### How to install
+            1. Download **S2XML_Compiler_Setup.exe**
+            2. Run it and click through the installer
+            3. Launch from your Desktop shortcut
+            No Python required — fully self-contained.
+          files: installer/S2XML_Compiler_Setup.exe
+          draft: false
+          prerelease: false
