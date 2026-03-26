@@ -21,12 +21,21 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install PyInstaller
-        run: pip install pyinstaller
+      - name: Install dependencies
+        run: pip install pyinstaller pillow
 
       - name: Build exe
         working-directory: src
         run: python -m PyInstaller s2xml.spec --noconfirm --clean
+
+      - name: Verify exe was built
+        run: |
+          if (!(Test-Path "src/dist/S2XML Compiler.exe")) {
+            Write-Error "Build failed - exe not found"
+            exit 1
+          }
+          Write-Host "Build successful"
+          Get-Item "src/dist/S2XML Compiler.exe" | Select-Object Name, Length
 
       - name: Install NSIS
         run: choco install nsis --yes --no-progress
@@ -34,7 +43,8 @@ jobs:
       - name: Build installer
         run: |
           Copy-Item "src/dist/S2XML Compiler.exe" "installer/S2XML Compiler.exe"
-          & "C:\Program Files (x86)\NSIS\makensis.exe" "installer/installer.nsi"
+          cd installer
+          & "C:\Program Files (x86)\NSIS\makensis.exe" installer.nsi
           Get-Item "installer/S2XML_Compiler_Setup.exe" | Select-Object Name, Length
 
       - name: Upload installer as artifact
@@ -51,11 +61,14 @@ jobs:
           name: "S2XML Compiler v1.0.${{ github.run_number }}"
           body: |
             ## S2XML Compiler
+
             Write Sims 2 mods as XML files and compile them into .package files.
+
             ### How to install
             1. Download **S2XML_Compiler_Setup.exe**
             2. Run it and click through the installer
             3. Launch from your Desktop shortcut
+
             No Python required — fully self-contained.
           files: installer/S2XML_Compiler_Setup.exe
           draft: false
